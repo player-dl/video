@@ -1,1 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Remote Dailymotion Player (Vercel Proxy)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Player ki zaroori styling */
+        #player-container {
+            width: 90%;
+            max-width: 960px;
+            margin: 50px auto;
+            background: #000;
+            position: relative;
+        }
+        #my-video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        #custom-controls {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            padding: 8px 15px;
+            cursor: pointer;
+            background: #4CAF50;
+            border: none;
+            color: white;
+        }
+        #seek-bar {
+            flex-grow: 1; 
+            margin: 0 15px;
+        }
+    </style>
+</head>
+<body>
 
+<div id="player-container">
+    <video id="my-video" preload="auto"></video>
+
+    <div id="custom-controls">
+        <button id="play-pause-btn">Play</button>
+        <input type="range" id="seek-bar" value="0" min="0" max="100">
+        <span id="time-display">0:00 / 0:00</span>
+        <button id="fullscreen-btn" style="margin-left: 15px;">FS</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script src="player.js"></script>
+
+</body>
+</html>
