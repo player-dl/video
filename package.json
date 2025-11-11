@@ -1,0 +1,12 @@
+{
+  "name": "dailymotion-vercel-proxy",
+  "version": "1.0.0",
+  "description": "Dailymotion stream proxy built with Vercel Serverless Function.",
+  "main": "api/stream.js",
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2" 
+  }
+}
