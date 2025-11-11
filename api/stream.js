@@ -1,8 +1,7 @@
-// File: api/stream.js (Vercel Serverless Function)
-
-// Dailymotion API Keys
-const DM_CONSUMER_KEY = '47fd2e6255a453bcc496';
-const DM_CONSUMER_SECRET = '10e6f32c4ea3292dd087723e16786a2fe3c770fc'; // Assuming this is correct
+// File: api/stream.js
+// Keys ko Vercel Environment Variables se load karen
+const DM_CONSUMER_KEY = process.env.DM_CONSUMER_KEY; 
+// DM_CONSUMER_SECRET ki zaroorat nahi, sirf DM_CONSUMER_KEY zaroori hai.
 
 // Vercel Serverless Function Handler
 export default async function handler(request, response) {
