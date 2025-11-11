@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 🛑 Zaroori: Vercel par deploy hone ke baad is URL ko badlen!
     // Misaal: https://mera-naya-proxy-9e1f.vercel.app/api/stream
-    const vercelProxyUrl = 'https://[APKA-VERCEL-DOMAIN-YAHAN-AAYEGA]/api/stream'; 
+    const vercelProxyUrl = 'https://video-sigma-one.vercel.app/api/stream'; 
     
     // ⚠️ Yahan apni Dailymotion video ka URL dalen
     const originalUrl = 'https://www.dailymotion.com/video/k6DKKtEiwhK7s6E8NRO'; 
