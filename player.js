@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const vercelProxyUrl = 'https://video-sigma-one.vercel.app/api/stream'; 
     
     // ⚠️ Yahan apni Dailymotion video ka URL dalen
-    const originalUrl = 'https://www.dailymotion.com/video/k6DKKtEiwhK7s6E8NRO'; 
+    const originalUrl = 'https://www.dailymotion.com/video/x6y4qby'; 
     
     // Final URL jo Vercel function ko call karega
     const hlsUrl = `${vercelProxyUrl}?videoUrl=${encodeURIComponent(originalUrl)}`;
