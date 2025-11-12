@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Main Website</title>
+    <title>No Iframe Player</title>
 </head>
 <body>
-  <h1>Mera Video</h1>
-  
-  <iframe 
-    src="https://video-player.ia297945.workers.dev/" 
-    width="800" 
-    height="450" 
-    frameborder="0" 
-    allowfullscreen>
-  </iframe>
-  
+
+    <div id="player-container"></div> 
+
+    <script src="//api.dmcdn.net/all.js"></script>
+
+    <script>
+        window.dmAsyncInit = function()
+        {
+            var player = DM.player("player-container", {
+                video: "x6y4qby", // Aapka Dailymotion Video ID
+                width: "100%",
+                height: "450",
+                params: {
+                    autoplay: true,
+                    // Yeh parameters branding ko kam karne ki koshish karte hain, 
+                    // lekin mukammal branding hatana possible nahi hai.
+                    'sharing-enable': false, 
+                    'ui-logo': false,
+                    'info': false 
+                }
+            });
+        };
+    </script>
+
 </body>
 </html>
