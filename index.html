@@ -3,15 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Proxy Player PoC</title>
-    <script src="https://content.jwplatform.com/libraries/YOUR_JW_PLAYER_KEY.js"></script> 
+    <title>Minimal Proxy Player (GitHub PoC)</title>
+    
+    <script src="https://assets-jpcust.jwpsrv.com/libraries/YOUR_JW_PLAYER_KEY.js"></script> 
+    
     <style>
-        body { margin: 0; background-color: #000; }
+        /* ... CSS code wahi rahega ... */
+        body { 
+            margin: 0; 
+            background-color: #000; 
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
         #player-container { 
-            width: 100%; 
-            max-width: 960px; 
-            margin: 50px auto; 
+            width: 90%; 
+            max-width: 1000px; 
             aspect-ratio: 16 / 9; 
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        .error-message {
+            color: white;
+            padding: 20px;
+            text-align: center;
         }
     </style>
 </head>
@@ -21,28 +37,27 @@
     </div>
 
     <script>
-        // --- 1. Decoder Function ---
+        // --- 1. Decoder Function (Base64) ---
         function simpleBase64Decode(encodedString) {
             try {
-                // Yeh aapki theme mein use hone wala basic decoding method hai
                 return atob(encodedString);
             } catch (e) {
-                console.error("Decoding error:", e);
                 return null;
             }
         }
 
-        // --- 2. Data Input (Encrypted ID ko yahan define karein) ---
-        // 'eDgyMDFn' ko apni encoded ID se badlen
-        const ENCRYPTED_VIDEO_ID = 'eDgyMDFn'; 
+        // --- 2. Input Data (Aapki Encrypted ID yahan hai) ---
+        // 🚨 Is 'eDgyMDFn' ko apni encoded Dailymotion Video ID (Base64) se badlen.
+        const ENCRYPTED_VIDEO_ID = 'k6Iv2S3tUvq6LyE8NRO'; 
         
         // --- 3. Player Loading Function ---
         function loadMinimalPlayer() {
             
             // Decryption
             const decodedId = simpleBase64Decode(ENCRYPTED_VIDEO_ID);
+            
             if (!decodedId) {
-                document.getElementById('video-player').innerHTML = 'Error: Video ID not found.';
+                document.getElementById('video-player').innerHTML = '<div class="error-message">Error: Video ID not decoded.</div>';
                 return;
             }
             
@@ -51,18 +66,18 @@
             
             // JW Player Setup
             if (window.jwplayer) {
+                // ✅ Change 2: jwplayer.key ya setup ko omit karna
                 jwplayer("video-player").setup({
                     file: dmEmbedUrl, 
                     width: "100%",
                     height: "100%",
                     autostart: true,
-                    // 🛑 Minimal UI / Controls Hide Karne Ke Liye Zaroori Setting 🛑
-                    controls: false, // Control bar chupa dega
-                    displaytitle: false, // Title chupana
-                    mute: true // Autoplay ke liye zaruri ho sakta hai
+                    controls: false,        // Control bar chupa dega
+                    displaytitle: false,    // Title chupana
+                    mute: true              
                 });
             } else {
-                 document.getElementById('video-player').innerHTML = 'JW Player library not loaded. Check key/CDN.';
+                 document.getElementById('video-player').innerHTML = '<div class="error-message">Error: JW Player library not loaded. Check CDN link.</div>';
             }
         }
 
