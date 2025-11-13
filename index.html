@@ -1,63 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Branding-Free Video.js Player</title>
-    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Proxy Player PoC</title>
+    <script src="https://content.jwplatform.com/libraries/YOUR_JW_PLAYER_KEY.js"></script> 
     <style>
-        /* Player ko page ke beech mein laane ke liye */
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #f0f0f0; }
-        .video-container { width: 80%; max-width: 900px; }
+        body { margin: 0; background-color: #000; }
+        #player-container { 
+            width: 100%; 
+            max-width: 960px; 
+            margin: 50px auto; 
+            aspect-ratio: 16 / 9; 
+        }
     </style>
 </head>
 <body>
-
-    <div class="video-container">
-        <video
-            id="my-video"
-            class="video-js vjs-default-skin"
-            controls
-            preload="auto"
-            width="100%"
-            height="500"
-            data-setup="{}"
-        >
-        </video>
+    <div id="player-container">
+        <div id="video-player"></div>
     </div>
 
-    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
-    <script src="https://unpkg.com/@videojs/http-streaming@3.7.0/dist/videojs-http-streaming.min.js"></script>
-
     <script>
-        // 1. Aapke Worker ka URL jahan se M3U8 link aayega
-        const workerUrl = "https://video-source.ia297945.workers.dev/"; 
+        // --- 1. Decoder Function ---
+        function simpleBase64Decode(encodedString) {
+            try {
+                // Yeh aapki theme mein use hone wala basic decoding method hai
+                return atob(encodedString);
+            } catch (e) {
+                console.error("Decoding error:", e);
+                return null;
+            }
+        }
+
+        // --- 2. Data Input (Encrypted ID ko yahan define karein) ---
+        // 'eDgyMDFn' ko apni encoded ID se badlen
+        const ENCRYPTED_VIDEO_ID = 'eDgyMDFn'; 
         
-        // 2. Worker se M3U8 link fetch karna
-        fetch(workerUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Worker link fetch failed.');
-                }
-                return response.text(); // Worker sirf text (M3U8 URL) return karega
-            })
-            .then(m3u8Url => {
-                console.log("Fetched M3U8 URL:", m3u8Url);
-                
-                // 3. Video.js Player ko initialise karna aur source set karna
-                const player = videojs('my-video');
-                
-                player.src({
-                    src: m3u8Url.trim(), // Worker se mila hua M3U8 link
-                    type: 'application/x-mpegURL' // HLS/M3U8 format
+        // --- 3. Player Loading Function ---
+        function loadMinimalPlayer() {
+            
+            // Decryption
+            const decodedId = simpleBase64Decode(ENCRYPTED_VIDEO_ID);
+            if (!decodedId) {
+                document.getElementById('video-player').innerHTML = 'Error: Video ID not found.';
+                return;
+            }
+            
+            // Dailymotion Embed URL banana
+            const dmEmbedUrl = `https://www.dailymotion.com/embed/video/${decodedId}`;
+            
+            // JW Player Setup
+            if (window.jwplayer) {
+                jwplayer("video-player").setup({
+                    file: dmEmbedUrl, 
+                    width: "100%",
+                    height: "100%",
+                    autostart: true,
+                    // 🛑 Minimal UI / Controls Hide Karne Ke Liye Zaroori Setting 🛑
+                    controls: false, // Control bar chupa dega
+                    displaytitle: false, // Title chupana
+                    mute: true // Autoplay ke liye zaruri ho sakta hai
                 });
+            } else {
+                 document.getElementById('video-player').innerHTML = 'JW Player library not loaded. Check key/CDN.';
+            }
+        }
 
-                player.on('error', function() {
-                    console.error('Video playback error. Check M3U8 link and CORS headers.');
-                });
-            })
-            .catch(error => {
-                console.error("Could not load video source from Worker:", error);
-            });
+        document.addEventListener('DOMContentLoaded', loadMinimalPlayer);
     </script>
-
 </body>
 </html>
